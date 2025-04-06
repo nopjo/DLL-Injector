@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Download, Syringe } from "lucide-react";
-import ProcessSelector from "./ProcessSelector";
+import ProcessSelector, { ProcessInfo } from "./ProcessSelector";
 import Notification from "../Notification";
 import TargetProcess from "./TargetProcess";
 import GameStatus from "./GameStatus";
@@ -55,10 +55,13 @@ const MainPanel = () => {
     setSelectedDll(dllPath);
   };
 
-  const handleProcessSelect = async (processName: string) => {
+  const handleProcessSelect = async (process: ProcessInfo) => {
     try {
-      await invoke("set_target_game", { processName });
-      setTargetGame(processName);
+      await invoke("set_target_game", {
+        processName: process.name,
+        processId: process.pid,
+      });
+      setTargetGame(process.name);
       setShowProcessSelector(false);
       checkGameStatus();
     } catch (error) {
@@ -89,8 +92,6 @@ const MainPanel = () => {
         await invoke("save_dll_list", { dlls: newDlls });
         setSavedDlls(newDlls);
       }
-
-      setSelectedDll(null);
     } catch (error) {
       console.error("Failed to inject DLL:", error);
       setNotification({ message: "Injection failed", type: "error" });
@@ -118,6 +119,7 @@ const MainPanel = () => {
 
       <div className="w-full max-w-md mx-auto bg-slate-800 border border-slate-700">
         <TargetProcess
+          targetGame={targetGame}
           onProcessSelectorOpen={() => setShowProcessSelector(true)}
         />
         <GameStatus targetGame={targetGame} />

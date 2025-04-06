@@ -32,7 +32,7 @@ const GameStatus = ({ targetGame }: GameStatusProps) => {
     <div className="p-4 border-b border-slate-700">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="text-sm text-slate-400">Game Status:</div>
+          <div className="text-sm text-slate-400">App Status:</div>
         </div>
         <div className="flex items-center space-x-2">
           {isGameRunning ? (

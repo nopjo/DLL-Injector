@@ -23,10 +23,13 @@ pub fn inject_dll(path: String, state: State<'_, AppState>) -> Result<String, St
     };
 
     let target_process_name = state_guard.target_process_name.clone();
-
-    let process_id = match find_process_id(&target_process_name) {
+    
+    let process_id = match state_guard.target_process_id {
         Some(pid) => pid,
-        None => return Err(format!("Process '{}' not found", target_process_name)),
+        None => match find_process_id(&target_process_name) {
+            Some(pid) => pid,
+            None => return Err(format!("Process '{}' not found", target_process_name)),
+        }
     };
 
     match inject_using_library(process_id, &absolute_path) {

@@ -4,9 +4,10 @@ use crate::state::AppState;
 use crate::models::SavedDll;
 
 #[tauri::command]
-pub fn set_target_game(process_name: String, state: State<'_, AppState>) -> Result<(), String> {
+pub fn set_target_game(process_name: String, process_id: Option<u32>, state: State<'_, AppState>) -> Result<(), String> {
     let mut state = state.injection_state.lock().unwrap();
     state.target_process_name = process_name;
+    state.target_process_id = process_id;
     Ok(())
 }
 
