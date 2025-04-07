@@ -94,7 +94,7 @@ npm run tauri dev
 
 4. Build the application (64 bit):
 ```
-npm run tauri build --target i686-pc-windows-msvc
+npm run tauri build
 ```
 
 5. Building the 32 bit version:
